@@ -59,7 +59,13 @@ namespace webrazorapp
                 // Config sign in.
                 options.SignIn.RequireConfirmedEmail = true;            // Configure email address validation (email must exist)
                 options.SignIn.RequireConfirmedPhoneNumber = false;     // Verify phone number
+                options.SignIn.RequireConfirmedAccount = false;
 
+            });
+            services.ConfigureApplicationCookie(options => {
+                options.LoginPath = "/login/";
+                options.LogoutPath = "/logout/";
+                options.AccessDeniedPath = "/khongduoctruycap.html";
             });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
