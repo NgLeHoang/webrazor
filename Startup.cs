@@ -1,3 +1,4 @@
+using System.Net;
 using Album.Mail;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -16,6 +17,7 @@ namespace webrazorapp
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddOptions();
             var mailSetting = Configuration.GetSection("MailSettings");
             services.Configure<MailSettings>(mailSetting);
@@ -59,13 +61,37 @@ namespace webrazorapp
                 // Config sign in.
                 options.SignIn.RequireConfirmedEmail = true;            // Configure email address validation (email must exist)
                 options.SignIn.RequireConfirmedPhoneNumber = false;     // Verify phone number
-                options.SignIn.RequireConfirmedAccount = false;
+                options.SignIn.RequireConfirmedAccount = true;
 
             });
-            services.ConfigureApplicationCookie(options => {
+
+            services.ConfigureApplicationCookie(options =>
+            {
                 options.LoginPath = "/login/";
                 options.LogoutPath = "/logout/";
                 options.AccessDeniedPath = "/khongduoctruycap.html";
+            });
+
+            services.AddAuthentication()
+            .AddGoogle(googleOptions =>
+            {
+                // Đọc thông tin Authentication:Google từ appsettings.json
+                var googleAuthNSection = Configuration.GetSection("Authentication:Google");
+
+                // Thiết lập ClientID và ClientSecret để truy cập API google
+                googleOptions.ClientId = googleAuthNSection["ClientId"];
+                googleOptions.ClientSecret = googleAuthNSection["ClientSecret"];
+                // Cấu hình Url callback lại từ Google (không thiết lập thì mặc định là /signin-google)
+                googleOptions.CallbackPath = "/dang-nhap-tu-google";
+            })
+            .AddFacebook(facebookOptions =>
+            {
+                // Đọc cấu hình
+                IConfigurationSection facebookAuthNSection = Configuration.GetSection("Authentication:Facebook");
+                facebookOptions.AppId = facebookAuthNSection["AppId"];
+                facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
+                // Thiết lập đường dẫn Facebook chuyển hướng đến
+                facebookOptions.CallbackPath = "/dang-nhap-tu-facebook";
             });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
