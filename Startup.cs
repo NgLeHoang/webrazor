@@ -3,6 +3,7 @@ using Album.Mail;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using MyApp.Services;
 using webrazorapp.models;
 
 namespace webrazorapp
@@ -93,6 +94,7 @@ namespace webrazorapp
                 // Thiết lập đường dẫn Facebook chuyển hướng đến
                 facebookOptions.CallbackPath = "/dang-nhap-tu-facebook";
             });
+            services.AddSingleton<IdentityErrorDescriber, AppIdentityErroDescriber>();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
