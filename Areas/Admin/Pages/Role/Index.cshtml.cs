@@ -13,11 +13,29 @@ namespace MyApp.Admin.Role
         public IndexModel(RoleManager<IdentityRole> roleManager, MyBlogContext myBlogContext) : base(roleManager, myBlogContext)
         {
         }
-
-        public List<IdentityRole> Roles { get; set; }
+        
+        public class RoleModel : IdentityRole
+        {
+            public string[] Claims { get; set; }
+        }
+        public List<RoleModel> Roles { get; set; }
         public async Task OnGet()
         {
-            Roles = await _roleManager.Roles.OrderBy(r => r.Name).ToListAsync();
+            var r = await _roleManager.Roles.OrderBy(r => r.Name).ToListAsync();
+
+            Roles = new List<RoleModel>();
+            foreach (var _r in r)
+            {
+                var claims = await _roleManager.GetClaimsAsync(_r);
+                var claimsString = claims.Select(c => c.Type + "=" + c.Value);
+                var rm = new RoleModel()
+                {
+                    Name = _r.Name,
+                    Id = _r.Id,
+                    Claims = claimsString.ToArray()
+                };
+                Roles.Add(rm);
+            }
         }
 
         public void OnPost() => RedirectToPage();

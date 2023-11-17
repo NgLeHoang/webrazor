@@ -95,6 +95,14 @@ namespace webrazorapp
                 facebookOptions.CallbackPath = "/dang-nhap-tu-facebook";
             });
             services.AddSingleton<IdentityErrorDescriber, AppIdentityErroDescriber>();
+
+            services.AddAuthorization(options => {
+                options.AddPolicy("AllowEditRole", policyBuilder =>{
+                    policyBuilder.RequireAuthenticatedUser();
+                    policyBuilder.RequireRole("Admin");
+                    policyBuilder.RequireClaim("canedit", "user");
+                });
+            });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

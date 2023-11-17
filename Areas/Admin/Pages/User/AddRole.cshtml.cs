@@ -20,14 +20,17 @@ namespace MyApp.Admin.User
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly MyBlogContext _context;
         public AddRoleModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            MyBlogContext myBlogContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _context = myBlogContext;
         }
 
         [TempData]
@@ -40,6 +43,9 @@ namespace MyApp.Admin.User
         [DisplayName("Các role gán cho user")]
         public string[] RoleNames { get; set; }
         public SelectList AllRoles { get; set; }
+
+        public List<IdentityRoleClaim<string>> ClaimsInRole { get; set; }
+        public List<IdentityUserClaim<string>> ClaimsInUserClaim { get; set; } 
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -59,7 +65,25 @@ namespace MyApp.Admin.User
             List<string> roleName = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
             AllRoles = new SelectList(roleName);
 
+            await GetClaims(id);
+
             return Page();
+        }
+        async Task GetClaims(string id)
+        {
+            var listRoles = from r in _context.Roles
+                            join ur in _context.UserRoles on r.Id equals ur.RoleId
+                            where ur.UserId == id
+                            select r;
+            
+            var _claimsInRole = from c in _context.RoleClaims
+                                join r in listRoles on c.RoleId equals r.Id
+                                select c;
+
+            ClaimsInRole = await _claimsInRole.ToListAsync();
+
+            ClaimsInUserClaim = await (from c in _context.UserClaims
+            where c.UserId == id select c).ToListAsync();
         }
 
         public async Task<IActionResult> OnPostAsync(string id)
@@ -75,6 +99,8 @@ namespace MyApp.Admin.User
             {
                 return NotFound($"Không thấy user, id = '{id}'.");
             }
+
+            await GetClaims(id);
 
             var OldRoleNames = (await _userManager.GetRolesAsync(User)).ToArray();
 
