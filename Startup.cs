@@ -27,14 +27,14 @@ namespace webrazorapp
             services.AddSingleton<IEmailSender, SendMailService>();
 
             services.AddRazorPages();
-            services.AddDbContext<MyBlogContext>(options =>
+            services.AddDbContext<AppDbContext>(options =>
             {
                 string? connectString = Configuration.GetConnectionString("MyBlogContext");
                 options.UseSqlServer(connectString);
             });
 
             // Register Identity
-            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<MyBlogContext>()
+            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
             // services.AddDefaultIdentity<AppUser>().AddEntityFrameworkStores<MyBlogContext>()

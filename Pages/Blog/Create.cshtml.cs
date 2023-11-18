@@ -11,9 +11,9 @@ namespace webrazorapp.Pages_Blog
 {
     public class CreateModel : PageModel
     {
-        private readonly webrazorapp.models.MyBlogContext _context;
+        private readonly webrazorapp.models.AppDbContext _context;
 
-        public CreateModel(webrazorapp.models.MyBlogContext context)
+        public CreateModel(webrazorapp.models.AppDbContext context)
         {
             _context = context;
         }

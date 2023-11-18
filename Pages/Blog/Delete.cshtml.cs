@@ -11,9 +11,9 @@ namespace webrazorapp.Pages_Blog
 {
     public class DeleteModel : PageModel
     {
-        private readonly webrazorapp.models.MyBlogContext _context;
+        private readonly webrazorapp.models.AppDbContext _context;
 
-        public DeleteModel(webrazorapp.models.MyBlogContext context)
+        public DeleteModel(webrazorapp.models.AppDbContext context)
         {
             _context = context;
         }

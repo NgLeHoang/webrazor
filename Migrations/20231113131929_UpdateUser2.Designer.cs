@@ -11,7 +11,7 @@ using webrazorapp.models;
 
 namespace webrazorapp.Migrations
 {
-    [DbContext(typeof(MyBlogContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20231113131929_UpdateUser2")]
     partial class UpdateUser2
     {

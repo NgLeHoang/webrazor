@@ -11,7 +11,7 @@ namespace MyApp.Admin.Role
     [Authorize(Roles = "Admin")]
     public class EditRoleClaim : RolePageModel
     {
-        public EditRoleClaim(RoleManager<IdentityRole> roleManager, MyBlogContext myBlogContext) : base(roleManager, myBlogContext)
+        public EditRoleClaim(RoleManager<IdentityRole> roleManager, AppDbContext myBlogContext) : base(roleManager, myBlogContext)
         {
         }
 

@@ -13,9 +13,9 @@ namespace webrazorapp.Pages_Blog
     [Authorize(Policy = "InGenZ")]
     public class DetailsModel : PageModel
     {
-        private readonly webrazorapp.models.MyBlogContext _context;
+        private readonly webrazorapp.models.AppDbContext _context;
 
-        public DetailsModel(webrazorapp.models.MyBlogContext context)
+        public DetailsModel(webrazorapp.models.AppDbContext context)
         {
             _context = context;
         }

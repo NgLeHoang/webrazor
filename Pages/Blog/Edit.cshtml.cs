@@ -13,10 +13,10 @@ namespace webrazorapp.Pages_Blog
 {
     public class EditModel : PageModel
     {
-        private readonly models.MyBlogContext _context;
+        private readonly models.AppDbContext _context;
         private readonly IAuthorizationService _authorizationService;
 
-        public EditModel(models.MyBlogContext context, IAuthorizationService authorizationService)
+        public EditModel(models.AppDbContext context, IAuthorizationService authorizationService)
         {
             _context = context;
             _authorizationService = authorizationService;

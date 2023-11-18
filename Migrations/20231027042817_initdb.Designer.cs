@@ -11,7 +11,7 @@ using webrazorapp.models;
 
 namespace webrazorapp.Migrations
 {
-    [DbContext(typeof(MyBlogContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20231027042817_initdb")]
     partial class initdb
     {

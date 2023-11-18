@@ -11,7 +11,7 @@ namespace MyApp.Admin.Role
     [Authorize(Policy = "AllowEditRole")]
     public class EditModel : RolePageModel
     {
-        public EditModel(RoleManager<IdentityRole> roleManager, MyBlogContext myBlogContext) : base(roleManager, myBlogContext)
+        public EditModel(RoleManager<IdentityRole> roleManager, AppDbContext myBlogContext) : base(roleManager, myBlogContext)
         {
         }
 

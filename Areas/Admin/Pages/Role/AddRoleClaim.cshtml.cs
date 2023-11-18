@@ -11,7 +11,7 @@ namespace MyApp.Admin.Role
     [Authorize(Roles = "Admin")]
     public class AddRoleModel : RolePageModel
     {
-        public AddRoleModel(RoleManager<IdentityRole> roleManager, MyBlogContext myBlogContext) : base(roleManager, myBlogContext)
+        public AddRoleModel(RoleManager<IdentityRole> roleManager, AppDbContext myBlogContext) : base(roleManager, myBlogContext)
         {
         }
 

@@ -13,9 +13,9 @@ namespace webrazorapp.Pages_Blog
     [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly webrazorapp.models.MyBlogContext _context;
+        private readonly webrazorapp.models.AppDbContext _context;
 
-        public IndexModel(webrazorapp.models.MyBlogContext context)
+        public IndexModel(webrazorapp.models.AppDbContext context)
         {
             _context = context;
         }
