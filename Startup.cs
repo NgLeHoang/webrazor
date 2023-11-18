@@ -1,8 +1,10 @@
 using System.Net;
 using Album.Mail;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using MyApp.Security.Requirements;
 using MyApp.Services;
 using webrazorapp.models;
 
@@ -97,12 +99,27 @@ namespace webrazorapp
             services.AddSingleton<IdentityErrorDescriber, AppIdentityErroDescriber>();
 
             services.AddAuthorization(options => {
-                options.AddPolicy("AllowEditRole", policyBuilder =>{
+                options.AddPolicy("AllowEditRole", policyBuilder => {
                     policyBuilder.RequireAuthenticatedUser();
                     policyBuilder.RequireRole("Admin");
                     policyBuilder.RequireClaim("canedit", "user");
                 });
+
+                options.AddPolicy("InGenZ", policyBuilder => {
+                    policyBuilder.RequireAuthenticatedUser();
+                    policyBuilder.Requirements.Add(new GenZRequirement());
+                });
+
+                options.AddPolicy("ShowAdminMenu", policyBuilder => {
+                    policyBuilder.RequireRole("Admin");
+                });
+
+                options.AddPolicy("CanUpdateArticle", policyBuilder => {
+                    policyBuilder.Requirements.Add(new ArticleUpdateRequirement());
+                });
             });
+
+            services.AddTransient<IAuthorizationHandler, AppAuthorizationHandler>();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
